@@ -14,6 +14,9 @@ export class Company {
   @Column()
   service_type: string;
 
+  @Column()
+  contact_number: string;
+
   @CreateDateColumn()
   created_at: Date;
 
