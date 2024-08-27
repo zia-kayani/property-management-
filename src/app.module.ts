@@ -9,6 +9,7 @@ import { LoginCredentialsModule } from './login-credentials/login-credentials.mo
 import { UnitCompanyServicesModule } from './unit-company-services/unit-company-services.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { CompanyLoginCredentialsModule } from './company-login-credentials/company-login-credentials.module';
 
 
 @Module({
@@ -40,6 +41,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     CompaniesModule,
     LoginCredentialsModule,
     UnitCompanyServicesModule,
+    CompanyLoginCredentialsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
