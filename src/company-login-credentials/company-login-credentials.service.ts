@@ -29,4 +29,8 @@ export class CompanyLoginCredentialsService {
 
         return this.companyLoginCredentialsRepository.save(companyLoginCredentials);
     }
+
+    async findAll() : Promise<CompanyLoginCredentials[]>{
+        return this.companyLoginCredentialsRepository.find()
+    }
 }

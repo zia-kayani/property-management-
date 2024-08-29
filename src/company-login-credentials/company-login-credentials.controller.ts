@@ -1,6 +1,7 @@
-import { Controller, Post, Param, Body } from '@nestjs/common';
+import { Controller, Post, Param, Body, Get } from '@nestjs/common';
 import { CreateCompanyLoginCredentialsDto } from './dto/company-login-credentials.dto';
 import { CompanyLoginCredentialsService } from './company-login-credentials.service';
+import { CompanyLoginCredentials } from './entities/company-login-credentials.entity';
 
 @Controller('company-login-credentials')
 export class CompanyLoginCredentialsController {
@@ -13,4 +14,11 @@ export class CompanyLoginCredentialsController {
   ) {
     return this.companyLoginCredentialsService.create(companyId, createCompanyLoginCredentialsDto);
   }
+
+  @Get()
+  async findAll() : Promise<CompanyLoginCredentials[]> {
+    return this.companyLoginCredentialsService.findAll()
+  }
+
+
 }

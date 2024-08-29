@@ -9,6 +9,7 @@ import { Unit } from './entities/units.entity';
   imports:[TypeOrmModule.forFeature([Unit])],
   controllers: [UnitsController],
   providers: [UnitsService],
+  exports:[UnitsService , TypeOrmModule]
 })
 
 export class UnitsModule {}

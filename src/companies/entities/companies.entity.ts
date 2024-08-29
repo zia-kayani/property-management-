@@ -1,7 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany } from 'typeorm';
-
-import { LoginCredentials } from 'src/login-credentials/entities/login-credentials.entity';
 import { UnitCompanyService } from 'src/unit-company-services/entities/unit-company-services.entity';
+import { LoginCredentials } from 'src/login-credentials/entities/login-credentials.entity';
 
 @Entity()
 export class Company {
