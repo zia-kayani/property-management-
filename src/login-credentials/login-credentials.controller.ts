@@ -10,4 +10,10 @@ export class LoginCredentialsController {
   async create(@Body() createLoginCredentialsDto: CreateLoginCredentialsDto) :Promise <string> {
     return this.loginCredentialsService.assignLoginCredentials(createLoginCredentialsDto)
   }
+
+  @Post('get-company-details')
+  async getCompanyDetails(@Body() body : {username :string , password: string}){
+    const {username , password} =  body;
+    return this.loginCredentialsService.getCompanyDetialsByCredentials(username , password);
+  }
 }
