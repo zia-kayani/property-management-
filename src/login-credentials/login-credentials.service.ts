@@ -7,7 +7,6 @@ import { LoginCredentials } from 'src/login-credentials/entities/login-credentia
 import { CompanyLoginCredentials } from 'src/company-login-credentials/entities/company-login-credentials.entity';
 import { Unit } from 'src/units/entities/units.entity';
 import { Company } from 'src/companies/entities/companies.entity';
-// import { PaymentStatus } from 'src/login-credentials/entities/login-credentials.entity';
 import { CreateLoginCredentialsDto } from './dto/create-login-credentials.dto';
 
 
@@ -27,6 +26,8 @@ export class LoginCredentialsService {
         private companyRepository: Repository<Company>,
     ) {}
 
+
+    //to create login credentials in login_credentials table based on unit id and company id 
     async assignLoginCredentials(createLoginCredentialsDto :  CreateLoginCredentialsDto): Promise<string> {
         const {company_id , unit_id , payment_status} = createLoginCredentialsDto;
 
@@ -76,9 +77,68 @@ export class LoginCredentialsService {
    await this.companyLoginCredentialsRepository.save(availableCompanyLoginCredential);
 
 
-        // Save the new LoginCredentials entity
+        // Save the new LoginCredentials eantity
         await this.loginCredentialsRepository.save(newLoginCredentials);
 
         return 'Login credentials assigned successfully';
+    }
+
+
+    //to retrieve company details based on username and password 
+    async getCompanyDetialsByCredentials (username :string , password : string)
+    {
+        // Find the company login credentials based on username and password
+        const companyLoginCredential =  await this.companyLoginCredentialsRepository.findOne({
+            where : {
+                username : username ,
+                password : password ,
+            },
+            relations: ['company'], // Ensure the company relation is loaded
+        })
+        console.log('companyLoginCredential:', companyLoginCredential);
+        if(!companyLoginCredential){
+            throw new NotFoundException('invalid username and password  !!!');
+        }
+
+        // Find the associated company
+        const company = await this.companyRepository.findOne({
+            where : {id : companyLoginCredential.company.id},
+            select : ['id' , 'company_name', 'contact_number', 'service_type' ]
+        })
+        console.log('company:', company);
+        if(!company){
+            throw new NotFoundException('company doest not found ')
+        }
+
+        //Find the payment status from the LoginCredentials table
+
+        const loginCredentials = await this.loginCredentialsRepository
+        .createQueryBuilder('loginCredentials')
+        .leftJoinAndSelect('loginCredentials.companyLoginCredential', 'companyLoginCredential')
+        .where('companyLoginCredential.username = :username', { username })
+        .andWhere('companyLoginCredential.password = :password', { password })
+        .getOne();
+    
+        if (!loginCredentials) {
+            throw new NotFoundException('Payment status not found for the provided credentials!');
+        }
+          
+          console.log('loginCredentials:', loginCredentials);
+          
+          if (!loginCredentials) {
+            throw new NotFoundException('No login credentials found for the provided company and credentials.');
+          }
+
+
+        // Return the company details along with the payment status
+        return  {
+            company_name : company.company_name,
+            contact_number : company.contact_number,
+            service_type : company.service_type,
+            // payment_status : loginCredentials.payment_status
+            payment_status : loginCredentials.payment_status
+
+        }
+
     }
 }
