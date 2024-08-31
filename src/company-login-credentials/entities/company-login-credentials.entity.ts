@@ -18,5 +18,5 @@ export class CompanyLoginCredentials {
 
     @OneToOne(() => Unit, { nullable: true })
     @JoinColumn()
-    unit: Unit;  // Ensures each set of credentials is linked to only one unit
+    unit: Unit;  
 }
