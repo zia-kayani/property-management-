@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
-// for db connection 
 import { UnitsModule } from './units/units.module';
 import { CompaniesModule } from './companies/companies.module';
 import { LoginCredentialsModule } from './login-credentials/login-credentials.module';
